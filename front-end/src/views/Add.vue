@@ -29,7 +29,7 @@
         <label for="profile" class="big-label">In-Depth Profile</label>
         <textarea v-model="profile.profile" id="profile" placeholder="Biography, personality information, etc."></textarea>
 
-        <div class="attribute" v-for="attribute in this.profile.personality" :key="attribute.name">
+        <div class="attribute" v-for="attribute in this.profile.personality" :key="attribute">
           <div class="row no-gutters justify-content-center">
             <label for="attName">New Attribute: </label>
             <input v-model="attribute.name" id="attName" placeholder="attribute name">
