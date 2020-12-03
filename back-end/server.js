@@ -55,7 +55,7 @@ app.get('/api/characters', async(req, res) => {
         let characters = await Character.find();
         res.send(characters);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         res.sendStatus(500);
     }
 });
@@ -65,7 +65,7 @@ app.get('/api/characters/:id', async(req, res) => {
         let character = await Character.findOne({_id: req.params.id});
         res.send(character);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         res.sendStatus(500);
     }
 });
@@ -83,7 +83,7 @@ app.post('/api/characters', async(req, res) => {
         await chara.save();
         res.send(chara);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         res.sendStatus(500);
     }
 });
@@ -100,7 +100,7 @@ app.put('/api/characters/:id', async(req, res) => {
         await chara.save();
         res.send(chara);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         res.sendStatus(500);
     }
 });
@@ -110,7 +110,7 @@ app.delete('/api/characters/:id', async(req, res) => {
         await Character.deleteOne({_id: req.params.id});
         res.sendStatus(200);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         res.sendStatus(500);
     }
 });
