@@ -14,6 +14,7 @@
           <Attribute :attribute="personality"></Attribute>
         </div>
       </div>
+      <div v-show="profile.filePath" class="col-2 text-center"><img :src="profile.filePath"/></div>
     </div>
     <div id="bio" class="row">
       <p>{{ this.profile.profile }}</p>
@@ -56,6 +57,11 @@ export default {
   #title {
     font-size: 3em;
     margin-bottom: 1em;
+  }
+  img {
+    width: 150px;
+    max-height: 150px;
+    border-radius: 100%;
   }
   #top {
     color: white;

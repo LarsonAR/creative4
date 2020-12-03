@@ -12,14 +12,18 @@
     </div>
 
     <div class="row person" v-for="profile in this.shownProfiles" :key="profile._id">
-      <div class="col-md-3 name">
+      <div class="col-auto pfp"><img :src="profile.filePath"/></div>
+      <div class="col-md-3 col-10 name">
         <h2>{{ profile.name }}</h2>
       </div>
       <div class="col occupation">
         <h6>{{ profile.occupation }}</h6>
       </div>
-      <div class="col-2 text-right view">
+      <div class="col-2 text-center view">
         <router-link :to="'/profile/' + profile._id"><strong>View Profile</strong></router-link>
+      </div>
+      <div class="col-2 text-center view">
+        <router-link :to="'/edit/' + profile._id"><strong>Edit Profile</strong></router-link>
       </div>
       <div class="col-1 text-center delete">
         <a href="#" id="delete" title="Delete Profile" @click="deleteProfile(profile)">X</a>
@@ -78,11 +82,21 @@ export default {
 
   .person {
     background-color: #e9ecef;
+    border-radius: 5px;
     margin-bottom: 1em;
     align-items: center;
   }
+  .pfp {
+    padding: 2px;
+  }
+  .pfp img {
+    width: 50px;
+    max-height: 50px;
+    border-radius: 100%;
+  }
   .name {
     background-color: #497575;
+    border-radius: 5px;
     padding: 5px;
     color: white;
   }

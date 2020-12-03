@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="container shadow"><router-view/></div>
-    <div class="github shadow"><a href="https://github.com/LarsonAR/creative3">Github</a></div>
+    <div class="github shadow"><a href="https://github.com/LarsonAR/creative4">Github</a></div>
   </div>
 </template>
 

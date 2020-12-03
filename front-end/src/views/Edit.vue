@@ -1,11 +1,11 @@
 <template>
-  <div class="container add">
-    <h1 class="page-title">Add a New Character Profile</h1>
-    <div v-if="added">
-      <p class="added">Character profile added successfully <router-link :to="'/profile/' + id">(View Character)</router-link></p>
+  <div class="container edit">
+    <div v-if="edited">
+      <p class="added">Character profile edited successfully <router-link :to="'/profile/' + id">(View Character)</router-link></p>
     </div>
     <div v-else>
-      <form>
+      <h1 class="page-title">Edit {{profile.name}}'s Profile</h1>
+      <form class="">
         <label for="name" class="big-label">Name</label>
         <input v-model="profile.name" placeholder="name" id="name">
 
@@ -29,7 +29,7 @@
         <label for="profile" class="big-label">In-Depth Profile</label>
         <textarea v-model="profile.profile" id="profile" placeholder="Biography, personality information, etc."></textarea>
 
-        <div class="attribute" v-for="attribute in this.profile.personality" :key="attribute.name">
+        <div class="attribute" v-for="attribute in this.profile.personality" :key="attribute.attribute">
           <div class="row no-gutters justify-content-center">
             <label for="attName">New Attribute: </label>
             <input v-model="attribute.name" id="attName" placeholder="attribute name">
@@ -42,7 +42,7 @@
           </div>
         </div>
         <button id="addAtt" type="button" @click="addAttribute()">Add Personality Attribute</button>
-        <button id="addChar" type="button" @click="addCharacter()">Add Character</button>
+        <button id="addChar" type="button" @click="editCharacter()">Finish Editing</button>
       </form>
     </div>
   </div>
@@ -50,24 +50,30 @@
 
 <script>
 import axios from 'axios';
+
 export default {
-  name: "Add",
+  name: "Edit",
   data() {
     return {
-      added: false,
-      id: "",
-      profile: {
-        name: "",
-        age: 0,
-        occupation: "",
-        profile: "",
-        personality: [],
-        filePath: null,
-      },
+      profile: {},
       file: null,
+      id: "",
+      edited: false
     }
   },
+  created() {
+    this.getProfile();
+  },
   methods: {
+    async getProfile() {
+      let id = this.$route.params.id;
+      try {
+        let response = await axios.get('/api/characters/' + id);
+        this.profile = response.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
     fileChanged(event) {
       this.file = event.target.files[0];
     },
@@ -84,12 +90,13 @@ export default {
       let index = this.profile.personality.findIndex(v => v === attribute);
       this.profile.personality.splice(index, 1);
     },
-    async addCharacter() {
+    async editCharacter() {
       if (this.file) await this.upload();
       let character = this.profile;
+      let id = this.$route.params.id;
       try {
-        let response = await axios.post('/api/characters', character);
-        this.added = true;
+        let response = await axios.put('/api/characters/' + id, character);
+        this.edited = true;
         this.id = response.data._id;
       } catch (e) {
         console.log(e);
@@ -106,64 +113,65 @@ export default {
       }
     }
   }
+
 }
 </script>
 
 <style scoped>
-  form {
-    background-color: aliceblue;
-    padding: 6px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 5px 5px #bbbbc1 inset;
-  }
-  .added {
-    width: 30em;
-    margin: 0 auto;
-    text-align: center;
-    background-color: #cdffcd;
-    border-radius: 5px;
-  }
-  label {
-    margin-right: 5px;
-  }
-  .big-label {
-    display: block;
-    text-align: center;
-    font-size: 2em;
-    margin: 0;
-  }
-  #name {
-    display: block;
-    font-size: 1.2em;
-    margin: 5px auto 10px auto;
-    width: 35%;
-    min-width: 250px;
-  }
-  #profile {
-    display: block;
-    width: 95%;
-    margin: 0 auto;
-  }
-  .attribute {
-    margin: 10px 0;
-  }
-  .extreme {
-    width: 20%;
-  }
-  #attRange {
-    width: 40%;
-  }
-  #delete {
-    color: red;
-  }
-  #addAtt {
-    display: block;
-    margin: 5px auto;
-  }
-  #addChar {
-    display: block;
-    margin: 15px auto;
-    font-size: 1.5em;
-  }
+.added {
+  width: 30em;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #cdffcd;
+  border-radius: 5px;
+}
+form {
+  background-color: aliceblue;
+  padding: 6px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 5px 5px #bbbbc1 inset;
+}
+label {
+  margin-right: 5px;
+}
+.big-label {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+  margin: 0;
+}
+#name {
+  display: block;
+  font-size: 1.2em;
+  margin: 5px auto 10px auto;
+  width: 35%;
+  min-width: 250px;
+}
+#profile {
+  display: block;
+  width: 95%;
+  margin: 0 auto;
+}
+.attribute {
+  margin: 10px 0;
+}
+.extreme {
+  width: 20%;
+}
+#attRange {
+  width: 40%;
+}
+#delete {
+  color: red;
+}
+#addAtt {
+  display: block;
+  margin: 5px auto;
+}
+#addChar {
+  display: block;
+  margin: 15px auto;
+  font-size: 1.5em;
+}
 </style>
